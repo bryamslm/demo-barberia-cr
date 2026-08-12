@@ -1,0 +1,362 @@
+---
+/**
+ * Demo: barbería y salón de estilo clásico.
+ * Negocio FICTICIO. Lo que se vende es la reserva: precio orientativo visible
+ * y agendar por WhatsApp sin llamar.
+ *
+ * Esqueleto distinto al de taller-mecanico: dos listas editoriales con
+ * propósitos distintos (servicios con precio, equipo sin fotos) más un bloque
+ * de política de reserva con numeración en acento, en vez del grid de pasos
+ * numerados del taller. Sin sección "proceso" tipo tarjetas.
+ */
+import Base from '../layouts/Base.astro';
+
+const brand = 'Barbería Bulevar';
+// Numero REAL de negocio de Bryam (8775 0508) con mensaje preescrito: el demo
+// es de un negocio ficticio, asi que el texto ya puesto le explica al que escribe
+// de donde viene y a Bryam de que rubro era el interesado.
+const whatsapp = 'https://wa.me/50687750508?text=Hola%20Bryam%2C%20vi%20la%20p%C3%A1gina%20de%20ejemplo%20de%20la%20barber%C3%ADa.%20Quiero%20una%20as%C3%AD%20para%20mi%20negocio.';
+
+const servicios = [
+  {
+    nombre: 'Corte clásico',
+    desc: 'Corte a tijera y máquina, incluye lavado y toalla caliente.',
+    meta: 'Desde ₡8 000',
+  },
+  {
+    nombre: 'Corte y barba',
+    desc: 'El corte completo más arreglo de barba con navaja y toalla caliente.',
+    meta: 'Desde ₡12 000',
+  },
+  {
+    nombre: 'Afeitado a navaja',
+    desc: 'Afeitado tradicional con espuma caliente y navaja, un ritual clásico de barbería.',
+    meta: 'Desde ₡7 000',
+  },
+  {
+    nombre: 'Color',
+    desc: 'Color y disimulo de canas con producto profesional, según el tono deseado.',
+    meta: 'Desde ₡15 000',
+  },
+  {
+    nombre: 'Tratamiento capilar',
+    desc: 'Hidratación profunda y masaje capilar para el cuero cabelludo y el cabello.',
+    meta: 'Desde ₡10 000',
+  },
+];
+
+const equipo = [
+  {
+    nombre: 'Esteban Vindas',
+    desc: 'Especialista en cortes clásicos y degradados, quince años de oficio.',
+    meta: 'Cortes y degradados',
+  },
+  {
+    nombre: 'Randall Quesada',
+    desc: 'El de mano firme para el afeitado a navaja y el arreglo de barba.',
+    meta: 'Afeitado y barba',
+  },
+  {
+    nombre: 'Kevin Salazar',
+    desc: 'Se encarga del color y los tratamientos capilares, atento al detalle.',
+    meta: 'Color y tratamientos',
+  },
+];
+
+const reserva = [
+  {
+    n: '01',
+    titulo: 'Cómo agendar',
+    desc: 'Escríbanos el servicio que desea y el día que le acomoda, nosotros confirmamos la hora.',
+  },
+  {
+    n: '02',
+    titulo: 'Política de citas',
+    desc: 'Le pedimos confirmar el día anterior, así dejamos el espacio libre para quien sí va a venir.',
+  },
+  {
+    n: '03',
+    titulo: 'Si llega tarde',
+    desc: 'Después de quince minutos de tolerancia, el espacio pasa al siguiente cliente en fila.',
+  },
+];
+---
+
+<Base
+  brand={brand}
+  whatsapp={whatsapp}
+  title="Barbería Bulevar — Reserve su cita sin llamar"
+  description="Barbería de estilo clásico con precio orientativo por servicio. Reserve corte, barba o afeitado a navaja por WhatsApp, sin llamar."
+>
+  <!-- HERO. Cero overlay: el titular cae en la mitad oscura del asset. -->
+  <section class="hero">
+    <div class="hero-media">
+      <img
+        src="/hero.webp"
+        alt="Sillón de barbero de cuero clásico junto a un mesón de mármol con navajas y brocha de afeitar"
+        fetchpriority="high"
+        decoding="async"
+        width="1376"
+        height="768"
+        data-parallax
+      />
+    </div>
+
+    <div class="wrap hero-content">
+      <h1 class="display">
+        <span class="serif reveal">Reserve su cita,</span>
+        <span class="sans reveal" data-delay="1">SIN LLAMAR</span>
+      </h1>
+      <p class="lead reveal" data-delay="2">
+        Vea el servicio y el precio orientativo, elija el día y confirme por WhatsApp. Sin
+        esperar a que alguien conteste el teléfono.
+      </p>
+      <div class="hero-actions reveal" data-delay="3">
+        <a class="btn btn-primary" href={whatsapp} target="_blank" rel="noopener">
+          Reservar por WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS: lista editorial con precio orientativo. -->
+  <section class="section" id="servicios">
+    <div class="wrap">
+      <p class="eyebrow reveal">Servicios y precio orientativo</p>
+      <h2 class="section-title reveal" data-delay="1">
+        Elija el servicio, vea el precio, reserve
+      </h2>
+      <p class="lead reveal" data-delay="2">
+        Los precios son orientativos y pueden variar según el largo del cabello o la barba.
+        Confirmamos el monto exacto por WhatsApp antes de la cita.
+      </p>
+
+      <div class="editorial">
+        {
+          servicios.map((s, i) => (
+            <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <h3 class="editorial-name">{s.nombre}</h3>
+              <p class="editorial-desc">{s.desc}</p>
+              <span class="editorial-meta">{s.meta}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPO: barberos ficticios, lista editorial, sin fotos. -->
+  <section class="section" id="equipo">
+    <div class="wrap">
+      <p class="eyebrow reveal">Nuestro equipo</p>
+      <h2 class="section-title reveal" data-delay="1">Tres barberos, cada uno con lo suyo</h2>
+      <p class="lead reveal" data-delay="2">
+        Puede pedir un barbero en específico al reservar, o dejar que le asignemos el primero
+        disponible.
+      </p>
+
+      <div class="editorial">
+        {
+          equipo.map((b, i) => (
+            <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <h3 class="editorial-name">{b.nombre}</h3>
+              <p class="editorial-desc">{b.desc}</p>
+              <span class="editorial-meta">{b.meta}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVAR: cómo agendar, política de citas y tolerancia de tardanza. -->
+  <section class="section reservar" id="reservar">
+    <div class="wrap">
+      <p class="eyebrow reveal">Cómo reservar</p>
+      <h2 class="section-title reveal" data-delay="1">Su cita en tres mensajes de WhatsApp</h2>
+      <p class="lead reveal" data-delay="2">
+        Nos escribe, le confirmamos la hora disponible y listo. No hace falta llamar ni
+        esperar línea.
+      </p>
+
+      <div class="politica">
+        {
+          reserva.map((r, i) => (
+            <div class="politica-row reveal" data-delay={String(i + 1)}>
+              <span class="politica-num">{r.n}</span>
+              <div>
+                <h3 class="politica-titulo">{r.titulo}</h3>
+                <p class="politica-desc">{r.desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <a class="btn btn-primary reveal" data-delay="4" href={whatsapp} target="_blank" rel="noopener">
+        Reservar por WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- UBICACIÓN + CIERRE -->
+  <section class="section" id="ubicacion">
+    <div class="wrap ubicacion-grid">
+      <div class="reveal">
+        <p class="eyebrow">Dónde y cuándo</p>
+        <h2 class="section-title">Nuestro horario</h2>
+        <p class="lead">
+          Atendemos con cita previa, aunque también recibimos clientes sin agendar si hay
+          espacio disponible.
+        </p>
+        <a class="btn btn-primary" href={whatsapp} target="_blank" rel="noopener">
+          Escribinos por WhatsApp
+        </a>
+      </div>
+
+      <dl class="datos reveal" data-delay="2">
+        <div>
+          <dt>Martes a sábado</dt>
+          <dd>9:00 a. m. a 7:00 p. m.</dd>
+        </div>
+        <div>
+          <dt>Domingo</dt>
+          <dd>9:00 a. m. a 2:00 p. m.</dd>
+        </div>
+        <div>
+          <dt>Lunes</dt>
+          <dd>Cerrado</dd>
+        </div>
+        <div>
+          <dt>WhatsApp</dt>
+          <dd>Reservas y consultas</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ─── Hero ─────────────────────────────────────────────────────────────── */
+  /* 100dvh, no 100vh: el chrome móvil recorta la sección con vh. */
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    align-items: flex-start;
+    padding-top: clamp(7rem, 18vh, 11rem);
+    padding-bottom: clamp(3rem, 10vh, 6rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    transform: scale(1.06);
+    will-change: transform;
+  }
+
+  /* Única concesión de degradado: NO es un scrim sobre el titular (el asset ya
+     es oscuro arriba), es la disolución del asset hacia el color de página en el
+     borde inferior, para que la sección siguiente no entre con un corte seco. */
+  .hero-media::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 38%;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+  }
+
+  .hero-content {
+    position: relative;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  /* ─── Reservar: filas con numeración en acento (el único detalle deliberado
+     además del CTA), separadas por hairline en vez de tarjetas con borde. ──── */
+  .politica {
+    border-top: 1px solid var(--hairline);
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .politica-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: baseline;
+    padding-block: clamp(1.4rem, 3vw, 2rem);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .politica-num {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+
+  .politica-titulo {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.02em;
+  }
+
+  .politica-desc {
+    margin: 0;
+    font-size: 0.98rem;
+    max-width: 52ch;
+  }
+
+  /* ─── Ubicación ────────────────────────────────────────────────────────── */
+  .ubicacion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .datos {
+    margin: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .datos > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+    padding-block: 1.05rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .datos dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+
+  .datos dd {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.98rem;
+    text-align: right;
+  }
+</style>
