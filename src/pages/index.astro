@@ -105,7 +105,7 @@ const reserva = [
     <div class="wrap hero-content">
       <h1 class="display">
         <span class="serif reveal">Reserve su cita,</span>
-        <span class="sans reveal" data-delay="1">SIN LLAMAR</span>
+        <span class="sans reveal" data-delay="1">Sin <em>llamar</em></span>
       </h1>
       <p class="lead reveal" data-delay="2">
         Vea el servicio y el precio orientativo, elija el día y confirme por WhatsApp. Sin
@@ -136,6 +136,7 @@ const reserva = [
         {
           servicios.map((s, i) => (
             <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <span class="editorial-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="editorial-name">{s.nombre}</h3>
               <p class="editorial-desc">{s.desc}</p>
               <span class="editorial-meta">{s.meta}</span>
@@ -160,6 +161,7 @@ const reserva = [
         {
           equipo.map((b, i) => (
             <div class="editorial-row reveal" data-delay={String(Math.min(i + 1, 4))}>
+              <span class="editorial-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="editorial-name">{b.nombre}</h3>
               <p class="editorial-desc">{b.desc}</p>
               <span class="editorial-meta">{b.meta}</span>
@@ -275,6 +277,29 @@ const reserva = [
     inset: auto 0 0 0;
     height: 38%;
     background: linear-gradient(to bottom, transparent, var(--bg));
+  }
+
+  /* En el teléfono la foto apaisada recortada al centro deja el titular sobre la
+     zona oscura y el héroe se ve negro: el asset se desperdicia. Abajo de 780 px
+     la foto deja de ser fondo, ocupa la mitad de arriba y el titular va debajo,
+     sobre negro sólido. */
+  @media (max-width: 780px) {
+    .hero {
+      min-height: auto;
+      padding-top: calc(50vh + 0.75rem);
+      padding-bottom: 2.5rem;
+    }
+    .hero-media {
+      inset: 0 0 auto 0;
+      height: 50vh;
+    }
+    .hero-media img {
+      object-position: 50% 38%;
+      transform: scale(1.02);
+    }
+    .hero-media::after {
+      height: 46%;
+    }
   }
 
   .hero-content {
